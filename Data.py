@@ -1,40 +1,27 @@
+from numpy import dtype
 import torch
-from torch import nn, tensor
-from torch.utils.data import DataLoader
-from torchvision import datasets
-from torchvision.transforms import ToTensor, Lambda
-import torchvision.models as models
-import matplotlib.pyplot as plt
-import os
+from torchvision.transforms import Lambda
 import pandas as pd
-from torchvision.io import read_image
 from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
 
 class BetaDataset(Dataset):
     def __init__(self, data_file, transform=None, target_transform=None):
-        #Select all but first row
         self.labels = pd.read_csv(data_file).iloc[:, 2:]
-        #Select all but first column and first row
         self.data = pd.read_csv(data_file).iloc[:, 1:-1]
-
-        # print("Labels:")
-        #print(self.labels)
-        # #Gets second label
-        # print(self.labels.iloc[1])
-        # print("Data:")
-        #print(self.data)
-        # #Gets first row of data
-        #print(self.data.iloc[:, 0])
 
         self.transform = transform
         self.target_transform = target_transform
 
     def __len__(self):
-        return len(self.labels)
+        #print("Giving size {}".format(len(self.labels) - 1))
+        return len(self.labels) - 1
 
     def __getitem__(self, idx):
-        data = self.data.iloc[:, idx].to_numpy()
-        label = self.labels.iloc[:, idx].to_numpy()
+        #print("Getting item {}".format(idx))
+
+        data = self.data.iloc[:, idx].to_numpy(dtype=float)
+        label = self.labels.iloc[:, idx].to_numpy(dtype=float)
 
         if self.transform:
             data = self.transform(data)
@@ -43,6 +30,12 @@ class BetaDataset(Dataset):
 
         return data, label
 
-training_data = BetaDataset(data_file='data.csv', transform=Lambda(lambda x: torch.from_numpy(x)), target_transform=Lambda(lambda y: torch.from_numpy(y)))
+training_data = BetaDataset(data_file='data.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
+test_data = BetaDataset(data_file='data.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
 
-print(training_data.__getitem__(0))
+def InitDataLoaders(batch_size):
+    train_dataloader = DataLoader(training_data, batch_size=batch_size)
+    test_dataloader = DataLoader(test_data, batch_size=batch_size)
+    print("Initialized Data Loader!")
+    
+    return train_dataloader, test_dataloader

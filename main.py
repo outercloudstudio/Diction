@@ -23,12 +23,17 @@ training_dataloader, test_dataloader = Data.InitDataLoaders(batch_size)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'Using {device} device')
 
-model = Model.Model().to(device)
+model = Model.Model()
+
+model.load_state_dict(torch.load('diction_w.pth'))
+model.eval()
+
+model = model.to(device)
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
-Train.Train(training_dataloader, model, loss_fn, optimizer, epochs)
+#Train.Train(training_dataloader, model, loss_fn, optimizer, epochs)
 
 Test.Test(test_dataloader, model, loss_fn)
 

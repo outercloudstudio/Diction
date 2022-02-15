@@ -7,6 +7,8 @@ def Train(dataloader, model, loss_fn, optimizer, epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loop(dataloader, model, loss_fn, optimizer)
 
+    torch.save(model.state_dict(), 'diction_w.pth')
+
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
 

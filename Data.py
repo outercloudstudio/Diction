@@ -30,8 +30,8 @@ class BetaDataset(Dataset):
 
         return data, label
 
-training_data = BetaDataset(data_file='data.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
-test_data = BetaDataset(data_file='data.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
+training_data = BetaDataset(data_file='data2.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
+test_data = BetaDataset(data_file='data2.csv', transform=Lambda(lambda x: torch.from_numpy(x).float()), target_transform=Lambda(lambda y: torch.from_numpy(y).float()))
 
 def InitDataLoaders(batch_size):
     train_dataloader = DataLoader(training_data, batch_size=batch_size)

@@ -9,12 +9,14 @@ import Train
 import Test
 import pandas as pd
 
+#Stopped at 1.18.10.20
+
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'Using {device} device')
 
 learning_rate = 1e-3
 batch_size = 1
-epochs = 100
+epochs = 10000
 
 training_dataloader, test_dataloader = Data.InitDataLoaders(batch_size)
 
@@ -28,9 +30,9 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 Train.Train(training_dataloader, model, loss_fn, optimizer, epochs)
 
-#Test.Test(test_dataloader, model, loss_fn)
+Test.Test(test_dataloader, model, loss_fn)
 
-graphData = pd.read_csv("data.csv")
+graphData = pd.read_csv("data2.csv")
 
 betas = len(graphData.columns)
 items = len(graphData.index)
@@ -64,8 +66,6 @@ for i in range(items):
     data = graphData.iloc[i, 1:].to_numpy()
 
     data = numpy.append(data, 0)
-
-    print(data)
 
     actual.plot(numpy.arange(betas), data, color=colors[i], marker='o')
 

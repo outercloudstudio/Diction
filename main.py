@@ -56,9 +56,11 @@ predictions = numpy.zeros((items, betas))
 
 for i in range(betas - 1):
     print("Predicting " + str(i + 1) + " / " + str(betas - 1))
-    gdata = graphData.iloc[i, 1:].to_numpy(dtype=float)
+    gdata = graphData.iloc[:, i + 1].to_numpy(dtype=float)
 
     data = torch.from_numpy(gdata).float()
+
+    print(data)
 
     pred = model(data.to(device))
 

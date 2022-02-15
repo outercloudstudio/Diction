@@ -19,6 +19,7 @@ class Model(nn.Module):
             nn.Linear(64, 32),
             nn.ReLU(),
             nn.Linear(32, 5),
+            nn.ReLU(),
         )
 
     def forward(self, x):

@@ -48,7 +48,7 @@ colors = [
     "#FE53BB",
     "#F5D300",
     "#00FF41",
-    "#ffff00"
+    "#eb344f"
 ]
 
 plt.style.use('seaborn-dark')
@@ -91,7 +91,7 @@ diff_linewidth = 1.05
 alpha_value = 0.03
 
 for i in range(items):
-    data = graphData.iloc[i, 1:].to_numpy()
+    data = graphData.iloc[i, 1:].to_numpy(dtype=float)
 
     data = numpy.append(data, 0)
 
@@ -100,12 +100,16 @@ for i in range(items):
     for n in range(1, n_lines+1):    
         actual.plot(numpy.arange(betas), data, color=colors[i], marker='o', linewidth=2+(diff_linewidth*n), alpha=alpha_value)
 
-    print(predictions[i])
+    print(data)
+
+    actual.fill_between(x=numpy.arange(betas), y1=data, color=colors[i], alpha=0.1)
 
     predicted.plot(numpy.arange(betas), predictions[i], color=colors[i], marker='o', label=labels_map[i])
 
     for n in range(1, n_lines+1):    
         predicted.plot(numpy.arange(betas), predictions[i], color=colors[i], marker='o', linewidth=2+(diff_linewidth*n), alpha=alpha_value)
+
+    predicted.fill_between(x=numpy.arange(betas), y1=predictions[i], color=colors[i], alpha=0.1)
 
 fig.suptitle('Actual vs Preditcions', fontsize=14)
 
